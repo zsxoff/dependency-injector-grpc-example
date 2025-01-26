@@ -1,0 +1,59 @@
+---
+colors: true
+
+pre-commit:
+  parallel: false
+  commands:
+    bandit:
+      tags: security,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: bandit -c pyproject.toml {staged_files}
+
+    ruff-format-isort:
+      tags: format,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: ruff check --preview --force-exclude --select I --fix {staged_files}
+
+    ruff-format:
+      tags: format,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: ruff format --preview --force-exclude {staged_files}
+
+    ruff-check:
+      tags: format,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: ruff format --preview --force-exclude --check {staged_files}
+
+    ruff:
+      tags: lint,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: ruff check --preview --force-exclude {staged_files}
+
+    mypy:
+      tags: lint,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: mypy --config-file pyproject.toml {staged_files}
+
+    pyright:
+      tags: lint,python
+      glob: "{*.py,*.pyi}"
+      exclude: "(_pb2_grpc\\.py|_pb2\\.pyi|_pb2\\.py)$"
+      run: pyright {staged_files}
+
+    uv-lock:
+      tags: lock,python
+      glob: "{pyproject.toml,uv.lock}"
+      run: uv lock && git add uv.lock
+
+pre-push:
+  parallel: true
+  uv-lock-check:
+    tags: lock,python
+    glob: "{pyproject.toml,uv.lock}"
+    run: uv lock --frozen

@@ -1,0 +1,154 @@
+[project]
+name = "dependency-injector-grpc-example"
+version = "0.1.0"
+description = "Example of using the dependency-injector and gRPC client/server"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "aiofiles==24.1.0",
+  "dependency-injector[pydantic2]==4.45.0",
+  "grpcio-reflection==1.70.0",
+  "grpcio==1.70.0",
+  "pydantic-settings==2.7.1",
+]
+
+[dependency-groups]
+dev = [
+  "bandit==1.8.2",
+  "grpcio-tools==1.70.0",
+  "mypy[faster-cache]==1.14.1",
+  "pyright==1.1.392.post0",
+  "ruff==0.9.3",
+  "types-aiofiles==24.1.0.20241221",
+  "types-protobuf==5.29.1.20241207",
+]
+
+[tool.bandit]
+exclude_dirs = [
+  ".git",        # common env
+  ".venv",       # common env
+  ".mypy_cache", # tools
+  ".ruff_cache", # tools
+  "organizer",   # project-specific
+]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+local_partial_types = true
+warn_unreachable = true
+warn_unused_ignores = false
+exclude = [
+  ".git",        # common env
+  ".venv",       # common env
+  ".mypy_cache", # tools
+  ".ruff_cache", # tools
+  "organizer",   # project-specific
+]
+disable_error_code = [
+  "no-untyped-call", # TODO: Wait for https://github.com/grpc/grpc/pull/37877
+  "no-untyped-def",  # TODO: Wait for https://github.com/grpc/grpc/pull/37877
+]
+
+[tool.pyright]
+pythonVersion = "3.13"
+pythonPlatform = "Linux"
+exclude = [
+  "**/__pycache__",  # common env
+  "**/.*",           # common env
+  "**/node_modules", # common env
+  "organizer",       # project-specific
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+lint.select = [
+  "F",     # Pyflakes
+  "E",     # pycodestyle - Error
+  "W",     # pycodestyle - Warning
+  "ERA",   # eradicate
+  "YTT",   # flake8-2020
+  "ANN",   # flake8-annotations
+  "ASYNC", # flake8-async
+  "S",     # flake8-bandit
+  "BLE",   # flake8-blind-except
+  "FBT",   # flake8-boolean-trap
+  "B",     # flake8-bugbear
+  "A",     # flake8-builtins
+  "C4",    # flake8-comprehensions
+  "DTZ",   # flake8-datetimez
+  "T10",   # flake8-debugger
+  "EM",    # flake8-errmsg
+  "EXE",   # flake8-executable
+  "FIX",   # flake8-fixme
+  "FA",    # flake8-future-annotations
+  "INT",   # flake8-gettext
+  "ISC",   # flake8-implicit-str-concat
+  "ICN",   # flake8-import-conventions
+  "LOG",   # flake8-logging
+  "G",     # flake8-logging-format
+  "INP",   # flake8-no-pep420
+  "PIE",   # flake8-pie
+  "T20",   # flake8-print
+  "PYI",   # flake8-pyi
+  "PT",    # flake8-pytest-style
+  "Q",     # flake8-quotes
+  "RSE",   # flake8-raise
+  "RET",   # flake8-return
+  "SLF",   # flake8-self
+  "SIM",   # flake8-simplify
+  "SLOT",  # flake8-slots
+  "TID",   # flake8-tidy-imports
+  "TD",    # flake8-todos
+  "TC",    # flake8-type-checking
+  "ARG",   # flake8-unused-arguments
+  "PTH",   # flake8-use-pathlib
+  "FLY",   # flynt
+  "I",     # isort
+  "C90",   # mccabe
+  "N",     # pep8-naming
+  "PERF",  # Perflint
+  "DOC",   # pydoclint
+  "D",     # pydocstyle
+  "PGH",   # pygrep-hooks
+  "PL",    # Pylint
+  "PLC",   # Pylint Convention
+  "PLE",   # Pylint Error
+  "PLR",   # Pylint Refactor
+  "PLW",   # Pylint Warning
+  "UP",    # pyupgrade
+  "FURB",  # refurb
+  "RUF",   # Ruff-specific rules
+  "TRY",   # tryceratops
+]
+lint.ignore = [
+  "ANN002", # Missing type annotation for `*args`
+  "ANN003", # Missing type annotation for `**kwargs`
+]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+lines-between-types = 0
+known-first-party = ["src"]
+known-third-party = ["organizer"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 6
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 120
+max-line-length = 120
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pylint]
+max-args = 6
