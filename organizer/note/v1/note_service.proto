@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package organizer.note.v1;
+
+option java_multiple_files = true;
+option java_outer_classname = "NoteServiceProto";
+option java_package = "organizer.note.v1";
+
+// A set of methods for managing notes.
+service NoteService {
+  // Creates a new note with the specified content.
+  rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {}
+
+  // Retrieves the content of an existing note by its ID.
+  rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {}
+}
+
+// Request message for [NoteService.CreateNote].
+message CreateNoteRequest {
+  // Content of the note to be created.
+  string content = 1;
+}
+
+// Response message for [NoteService.CreateNote].
+message CreateNoteResponse {
+  // Unique identifier of the newly created note.
+  string note_id = 1;
+}
+
+// Request message for [NoteService.GetNote].
+message GetNoteRequest {
+  // Unique identifier of the note to retrieve.
+  string note_id = 1;
+}
+
+// Response message for [NoteService.GetNote].
+message GetNoteResponse {
+  // Content of the retrieved note.
+  string content = 1;
+}
