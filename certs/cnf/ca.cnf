@@ -1,0 +1,13 @@
+[ req ]
+default_bits = 2048
+prompt = no
+encrypt_key = no
+distinguished_name = root_ca
+
+[ root_ca ]
+C = US
+ST = California
+L = San Francisco
+O = My Organization
+OU = My Organizational Unit
+CN = My Root CA
