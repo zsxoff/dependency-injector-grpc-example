@@ -48,9 +48,9 @@ class GrpcNoteContainer(containers.DeclarativeContainer):
     )
 
     __root_certificates, __private_key, __certificate_chain = (
-        providers.Resource(_read_file_or_none, file=config.grpc.root_certificates),
-        providers.Resource(_read_file_or_none, file=config.grpc.private_key),
-        providers.Resource(_read_file_or_none, file=config.grpc.certificate_chain),
+        providers.Resource(_read_file_or_none, file=config.root_certificates),
+        providers.Resource(_read_file_or_none, file=config.private_key),
+        providers.Resource(_read_file_or_none, file=config.certificate_chain),
     )
 
     __credentials: providers.Resource[grpc.ChannelCredentials] = providers.Resource(
@@ -62,10 +62,10 @@ class GrpcNoteContainer(containers.DeclarativeContainer):
 
     __channel = providers.Resource(
         _aio_secure_channel,
-        target=config.grpc.target,
+        target=config.target,
         credentials=__credentials,
-        options=config.grpc.options,
-        compression=config.grpc.compression,
+        options=config.options,
+        compression=config.compression,
         interceptors=None,  # You can include interceptors here
     )
 

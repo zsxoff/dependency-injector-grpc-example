@@ -4,12 +4,11 @@ import pathlib
 from typing import Annotated
 
 import grpc
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Doc
 
 
-class GrpcClientSettings(BaseModel):
+class GrpcClientSettings(BaseSettings):
     """gRPC client settings."""
 
     target: Annotated[
@@ -85,11 +84,7 @@ class GrpcClientSettings(BaseModel):
     ] = grpc.Compression.NoCompression
 
 
-class NoteClientSettings(BaseSettings):
+class NoteClientSettings(GrpcClientSettings):
     """gRPC client settings."""
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_prefix="NOTE_CLIENT_", env_nested_delimiter="__", extra="ignore"
-    )
-
-    grpc: GrpcClientSettings
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="GRPC_NOTE_CLIENT_", extra="ignore")
