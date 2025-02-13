@@ -1,4 +1,4 @@
-"""gRPC client main."""
+"""Main module."""
 
 import asyncio
 
