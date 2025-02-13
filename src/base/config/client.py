@@ -1,10 +1,10 @@
-"""Config module."""
+"""Client config."""
 
 import pathlib
 from typing import Annotated
 
 import grpc
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 from typing_extensions import Doc
 
 
@@ -82,9 +82,3 @@ class GrpcClientSettings(BaseSettings):
             """
         ),
     ] = grpc.Compression.NoCompression
-
-
-class NoteClientSettings(GrpcClientSettings):
-    """gRPC client settings."""
-
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="GRPC_NOTE_CLIENT_", extra="ignore")

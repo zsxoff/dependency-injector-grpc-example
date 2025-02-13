@@ -1,14 +1,11 @@
-"""Client module."""
+"""Channel module."""
 
 import pathlib
 from collections.abc import AsyncIterator
 
 import aiofiles
-import grpc  # type: ignore[reportMissingTypeStubs]
+import grpc
 from dependency_injector import containers, providers
-from organizer.note.v1.note_service_pb2_grpc import NoteServiceStub
-
-from src.client.config import NoteClientSettings
 
 
 async def _aio_secure_channel(*args, **kwargs) -> AsyncIterator[grpc.aio.Channel]:
@@ -39,13 +36,10 @@ async def _read_file_or_none(file: pathlib.Path | None) -> bytes | None:
         return await read_file.read()
 
 
-class GrpcNoteContainer(containers.DeclarativeContainer):
-    """gRPC Note client dependency injection container."""
+class GrpcSingleSecureChannel(containers.DeclarativeContainer):
+    """gRPC secure channel dependency injection container."""
 
-    config: NoteClientSettings = providers.Configuration(  # type: ignore[assignment]
-        pydantic_settings=[NoteClientSettings()],  # type: ignore[call-arg]
-        strict=True,
-    )
+    config = providers.Configuration()
 
     __root_certificates, __private_key, __certificate_chain = (
         providers.Resource(_read_file_or_none, file=config.root_certificates),
@@ -60,7 +54,7 @@ class GrpcNoteContainer(containers.DeclarativeContainer):
         certificate_chain=__certificate_chain,
     )
 
-    __channel = providers.Resource(
+    channel = providers.Resource(
         _aio_secure_channel,
         target=config.target,
         credentials=__credentials,
@@ -68,5 +62,3 @@ class GrpcNoteContainer(containers.DeclarativeContainer):
         compression=config.compression,
         interceptors=None,  # You can include interceptors here
     )
-
-    client = providers.Singleton(NoteServiceStub, channel=__channel)
