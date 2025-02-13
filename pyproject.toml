@@ -16,11 +16,11 @@ dependencies = [
 dev = [
   "bandit==1.8.2",
   "grpcio-tools==1.70.0",
-  "mypy[faster-cache]==1.14.1",
-  "pyright==1.1.392.post0",
-  "ruff==0.9.3",
+  "mypy[faster-cache]==1.15.0",
+  "pyright==1.1.394",
+  "ruff==0.9.6",
   "types-aiofiles==24.1.0.20241221",
-  "types-protobuf==5.29.1.20241207",
+  "types-protobuf==5.29.1.20250208",
 ]
 
 [tool.bandit]
